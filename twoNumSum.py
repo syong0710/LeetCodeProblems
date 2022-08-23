@@ -3,7 +3,6 @@ class TwoNumSum:
         self.sumList = inputList
         self.sumTarget = inputTarget
 
-
     def twoNumSum_brutalForce(self) -> list:
         if self.sumList is None:
             return []
@@ -20,8 +19,7 @@ class TwoNumSum:
                     outputList[-1] = [item1, item2] # The last item of the array
         return outputList
 
-
-
+    # Two num sum using Dictionary of Python
     # input array = [9, 2]
     #      target = 11
     #   key array = [2, 9]
@@ -42,7 +40,6 @@ class TwoNumSum:
             else:
                 sumDictionary[key_temp] = self.sumList[i]
         return outputList
-
 
 
 inputList_1 = [11, 1, 2, 3, 4, 5, 6, 10, 0, 7, 8, 9]
