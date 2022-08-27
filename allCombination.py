@@ -1,5 +1,5 @@
-class Solution:
-    # list all the combination of the array range(1 n+1), with k elements 
+class Solution1:
+    # list all the combination of the array range(1 n+1), with k elements
     def combine(n:int, k:int):
         res = []
         path = []
@@ -16,11 +16,35 @@ class Solution:
         backtrack(n, k, 1)
         return res
 
+class Solution2:
+    def combine_improve(n:int, k:int):
+        res = []
+        path = []
+        def backtrack_improve(n, k, startIndex):
+            if len(path) == k:
+                res.append(path[:])
+                return
+            #已经选择的元素个数：path.size();
+            #还需要的元素个数为: k - path.size();
+            #在集合n中至多要从该起始位置: n - (k - path.size()) + 1，开始遍历
+            for i in range(startIndex, n-(k-len(path))+2):
+                path.append(i)
+                backtrack_improve(n, k, i + 1)
+                path.pop()
+        backtrack_improve(n, k, 1)
+        return res
+
 
 n = 4
 k = 2
-result = Solution.combine(n,k)
-print(result)
+result1 = Solution1.combine(n,k)
+print(result1)
+
+result2 = Solution2.combine_improve(n,k)
+print(result2)
+
+
+
 #
 ##################################################################
 # ******** The illustration of combine(n:int, k:int)  ***********
