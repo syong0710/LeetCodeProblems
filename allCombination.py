@@ -16,7 +16,6 @@ class Solution1:
         backtrack(n, k, 1)
         return res
 
-class Solution2:
     def combine_improve(n:int, k:int):
         res = []
         path = []
@@ -40,7 +39,7 @@ k = 2
 result1 = Solution1.combine(n,k)
 print(result1)
 
-result2 = Solution2.combine_improve(n,k)
+result2 = Solution1.combine_improve(n,k)
 print(result2)
 
 
