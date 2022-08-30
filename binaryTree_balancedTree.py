@@ -147,24 +147,25 @@ class BinaryTree:
 
     # The maximum depth of the tree (from the top go downward)
     def maxDepth(self, root:TreeNode)->int:
-        def preOrderTrav(root:TreeNode, depth, result_depth):
+        def preOrderTrav(root:TreeNode, depth):
             result_depth.append(depth)
-            #print("result depth=" + str(result_depth))
+            # print("result depth=" + str(result_depth))
             if root.left is None and root.right is None:
                 return
             if root.left:
                 depth = depth + 1
-                preOrderTrav(root.left, depth, result_depth)
+                preOrderTrav(root.left, depth)
                 depth = depth - 1
             if root.right:
                 depth = depth + 1
-                preOrderTrav(root.right, depth, result_depth)
+                preOrderTrav(root.right, depth)
                 depth = depth - 1
             return result_depth
 
         if root is None:
             return 0
-        result_depth = preOrderTrav(root, 1, [])
+        result_depth = []
+        result_depth = preOrderTrav(root, 1)
         maxDepth = max(result_depth)
         return maxDepth
 
