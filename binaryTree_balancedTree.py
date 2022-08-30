@@ -132,8 +132,42 @@ class BinaryTree:
         allPath(root, path, sum_of_path)
         return result, result_sum
 
-    # The height of the tree
-    # The depth of the tree
+    # The height of the tree (from the bottom go upward)
+    def maxHeight(self, root:TreeNode) -> int:
+        def postOrderTrav(root:TreeNode):
+            if root is None:
+                return 0
+            heightLeft = postOrderTrav(root.left)
+            heightRight = postOrderTrav(root.right)
+            height = max(heightLeft,heightRight) + 1
+            return height
+        height = 0
+        height = postOrderTrav(root)
+        return height
+
+    # The maximum depth of the tree (from the top go downward)
+    def maxDepth(self, root:TreeNode)->int:
+        def preOrderTrav(root:TreeNode, depth, result_depth):
+            result_depth.append(depth)
+            #print("result depth=" + str(result_depth))
+            if root.left is None and root.right is None:
+                return
+            if root.left:
+                depth = depth + 1
+                preOrderTrav(root.left, depth, result_depth)
+                depth = depth - 1
+            if root.right:
+                depth = depth + 1
+                preOrderTrav(root.right, depth, result_depth)
+                depth = depth - 1
+            return result_depth
+
+        if root is None:
+            return 0
+        result_depth = preOrderTrav(root, 1, [])
+        maxDepth = max(result_depth)
+        return maxDepth
+
 
     # if the tree is balanced
     def isBalanced(self, root:TreeNode) -> bool:
@@ -192,6 +226,7 @@ print("All path sum: " + str(result_sum_path))
 
 print(binaryTree1.isBalanced(binaryTree1.root))
 
-
+print("The maximum height of the tree:" + str(binaryTree1.maxHeight(binaryTree1.root)))
+print("The maximum depth of the tree:" + str(binaryTree1.maxDepth(binaryTree1.root)))
 
 
