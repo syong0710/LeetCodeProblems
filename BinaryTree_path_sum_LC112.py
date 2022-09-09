@@ -17,6 +17,8 @@ class BinaryTree:
         return result
 
     def __preOrder(self, root:TreeNode, result:list):
+        if root is None:
+            return
         result.append(root.value)
         if root.left:
             self.__preOrder(root.left, result)
