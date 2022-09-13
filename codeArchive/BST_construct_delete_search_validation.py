@@ -63,25 +63,28 @@ class BST:
                 # 当前节点的右子树替换掉当前节点，完成当前节点的删除
                 root = root.right
                 return root
-
-    def checkIsValidBST(self, root: TreeNode, leftParentNodeValue:float, rightParentNodeValue:float)->bool:
+            
+    # check if the BST is valid        
+    def validateBST(self, root: TreeNode) -> bool:
+        return self.checkIsValidBST(root, float("inf"), -float("inf"))
+    
+    def checkIsValidBST(self, root:TreeNode, largerParentValue:float, smallerParentValue:float) -> bool:
         if root is None:
             return True
-        if root.value >= leftParentNodeValue:
+        if root.value >= largerParentValue:
             return False
-        if root.value < rightParentNodeValue:
+        if root.value < smallerParentValue:
             return False
 
-        leftBool = self.checkIsValidBST(root.left, root.value, rightParentNodeValue)
-        rightBool = self.checkIsValidBST(root.right,leftParentNodeValue, root.value)
+        leftBool = self.checkIsValidBST(root.left, root.value, smallerParentValue)
+        rightBool = self.checkIsValidBST(root.right, largerParentValue, root.value)
 
         if leftBool and rightBool:
             return True
         else:
             return False
 
-    def validateBST(self, root:TreeNode)->bool:
-        return self.checkIsValidBST(root, float("inf"), -float("inf"))
+
 
 
     # if the key contains in the tree
