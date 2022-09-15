@@ -8,81 +8,81 @@ class BST:
     def __init__(self, rootValue:int):
         self.root = TreeNode(rootValue)
 
-    # Insert nodes into the binary search tree
-    def insertNode(self, root:TreeNode, nodeValue:int)->TreeNode:
+    def insertNode(self, root:TreeNode, nodeValue:int) -> TreeNode:
         if root is None:
             return TreeNode(nodeValue)
         else:
-            if nodeValue < root.value:
-                root.left = self.insertNode(root.left, nodeValue)
-                return root
-            elif nodeValue > root.value:
+            if nodeValue > root.value:
                 root.right = self.insertNode(root.right, nodeValue)
+                return root
+            elif nodeValue < root.value:
+                root.left = self.insertNode(root.left, nodeValue)
                 return root
             elif nodeValue == root.value:
                 return root
 
-
-    # in-order traversal of the binary tree
-    def inOrderTrav(self, root:TreeNode) -> list:
+    def levOrderTrav(self, root:TreeNode) ->list:
         if root is None:
             return []
         result = []
-        self._inOrder(root, result)
+        nodeStack = []
+        nodeStack.append(root)
+        while nodeStack:
+            for _ in range(len(nodeStack)):
+                nodeTemp = nodeStack.pop(0)
+                result.append(nodeTemp.value)
+                if nodeTemp.left:
+                    nodeStack.append(nodeTemp.left)
+                if nodeTemp.right:
+                    nodeStack.append(nodeTemp.right)
         return result
 
-    def _inOrder(self, root:TreeNode, result: list):
-        if root is None:
-            return
+
+    def isValidBST(self, root:TreeNode) ->bool:
+        return self.validateBST(root, float("inf"), -float("inf"))
+
+    def validateBST(self, node:TreeNode, maxNodeValue:float, minNodeValue:float)->bool:
+        if node is None:
+            return True
+        if node.value >= maxNodeValue:
+            return False
+        if node.value < minNodeValue:
+            return False
+
+        leftBool = self.validateBST(node.left, node.value, minNodeValue)
+        rightBool = self.validateBST(node.right, maxNodeValue, node.value)
+
+        if leftBool and rightBool:
+            return True
         else:
-            self._inOrder(root.left, result)
-            result.append(root.value)
-            self._inOrder(root.right, result)
-
-    # check if the BST is valid: the output of the in-order traversal should be sorted
-    def isValidBST(self, root:TreeNode)->bool:
-        inOrderList = self.inOrderTrav(root)
-        return self._isSorted(inOrderList)
+            return False
 
 
-    def _isSorted(self, inputArray:list)->bool:
-        for i in range(1, len(inputArray)):
-            # notice that BST cannot have duplicated element
-            if inputArray[i] <= inputArray[i-1]:
-                return False
-        return True
-
-
-
-btree1 = BST(50)
-btree1.insertNode(btree1.root, 25)
-btree1.insertNode(btree1.root, 75)
-btree1.insertNode(btree1.root, 30)
-btree1.insertNode(btree1.root, 20)
-btree1.insertNode(btree1.root, 70)
+bst1 = BST(50)
+bst1.root.left = TreeNode(50)
+#bst1.root.right= TreeNode(50)
 
 """
-            50
-         /      \
-        25        75
-       /  \       /      
-     20    30    70   
-
+bst1.insertNode(bst1.root, 75)
+bst1.insertNode(bst1.root, 25)
+bst1.insertNode(bst1.root, 85)
+bst1.insertNode(bst1.root, 15)
+bst1.insertNode(bst1.root, 30)
+bst1.insertNode(bst1.root, 35)
+bst1.insertNode(bst1.root, 22)
+bst1.insertNode(bst1.root, 11)
 """
 
-print("In-order traversal of the tree: " + str(btree1.inOrderTrav(btree1.root)))
-print("if the BST is valid:  " + str(btree1.isValidBST(btree1.root)))
-
-
-
-btree1.root.right.right = TreeNode(1)
 """
-            50
-         /      \
-        25        75
-       /  \       /  \    
-     20    30    70   1
-
+               50
+           /       \
+         25         75
+        /   \         \
+      15     30        85    
+     /   \     \
+    11   22     35
 """
-print("In-order traversal of the tree: " + str(btree1.inOrderTrav(btree1.root)))
-print("if the BST is valid:  " + str(btree1.isValidBST(btree1.root)))
+
+
+print("level order traversal of the BST: " + str(bst1.levOrderTrav(bst1.root)))
+print("if the BST is valid: " + str(bst1.isValidBST(bst1.root)))
