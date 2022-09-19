@@ -25,23 +25,30 @@ class BinaryTree:
                     nodeQue.append(nodeTemp.right)
         return result
 
-    # The list of all leaves
-    def allLeaves(self, root:TreeNode) -> list:
+    # The list of all left leaves
+    def leftLeavesSum(self, root:TreeNode) -> int:
+        if root is None:
+            return 0
+        leftLeavesList = []
+        self.preOrderLeftLeaves(root, leftLeavesList)
+        return sum(leftLeavesList)
+
+    def allLeftLeaves(self, root:TreeNode) -> list:
         if root is None:
             return []
-        leaves_list = []
-        self.preOrderLeaves(root, leaves_list)
-        return leaves_list
+        leftLeavesList = []
+        self.preOrderLeftLeaves(root, leftLeavesList)
+        return leftLeavesList
 
-    def preOrderLeaves(self, root:TreeNode, leavesList:list):
+    def preOrderLeftLeaves(self, root:TreeNode, leavesList:list):
         if root is None:
             return
         if root.left and root.left.left is None and root.left.right is None:
             leavesList.append(root.left.value)
         if root.left:
-            self.preOrderLeaves(root.left, leavesList)
+            self.preOrderLeftLeaves(root.left, leavesList)
         if root.right:
-            self.preOrderLeaves(root.right, leavesList)
+            self.preOrderLeftLeaves(root.right, leavesList)
         return leavesList
 
 
@@ -55,10 +62,8 @@ btree1.root.right.right = TreeNode(4)
 btree1.root.left.left.left = TreeNode(7)
 btree1.root.left.left.right = TreeNode(2)
 btree1.root.left.left.right.left = TreeNode(12)
-btree1.root.left.left.right.right = TreeNode(13)
+btree1.root.left.left.right.right = TreeNode(19)
 btree1.root.right.right.left = TreeNode(5)
-btree1.root.right.right.right = TreeNode(1)
-btree1.root.right.right.right = TreeNode(1)
 btree1.root.right.right.right = TreeNode(1)
 btree1.root.right.right.right.right = TreeNode(9)
 
@@ -72,8 +77,9 @@ btree1.root.right.right.right.right = TreeNode(9)
     /   \                 /  \  
    7     2               5     1
         /  \                      \
-       12   13                      9
+       12   19                      9
 """
 
 print("Pre-order traversal of the binary tree: " + str(btree1.levelOrderTrav(btree1.root)))
-print("The heaves of the binary tree: " + str(btree1.allLeaves(btree1.root)))
+print("The left leaves of the binary tree: " + str(btree1.allLeftLeaves(btree1.root)))
+print("The sum of all the left leaves of the binary tree: " + str(btree1.leftLeavesSum(btree1.root)))
