@@ -1,5 +1,5 @@
 class TreeNode:
-    def __init__(self, nodeValue:int):
+    def __init__(self, nodeValue):
         self.value = nodeValue
         self.left = None
         self.right = None
@@ -8,70 +8,91 @@ class BinaryTree:
     def __init__(self, rootValue):
         self.root = TreeNode(rootValue)
 
-    # pre-order traversal of the binary tree
+    # preOrder traversal of the binary tree
     def preOrderTrav(self, root:TreeNode)->list:
         if root is None:
             return []
         result = []
-        self.__preOrder(root,result)
+        self._preOrder(root,result)
         return result
 
-    def __preOrder(self, root:TreeNode, result:list):
+    def _preOrder(self, root: TreeNode, result:list):
         if root is None:
             return
-        result.append(root.value)
-        if root.left:
-            self.__preOrder(root.left, result)
-        if root.right:
-            self.__preOrder(root.right, result)
-        if root.left is None and root.left is None:
-            return
+        else:
+            result.append(root.value)
+            self._preOrder(root.left, result)
+            self._preOrder(root.right, result)
 
-    # path sum list
-    def pathSum(self, root:TreeNode, sumTarget:int) -> bool:
+    # Check if the targetSum is included in the root-to-leaf path sum
+    def checkPathSum(self, root:TreeNode, targetSum:int) -> bool:
         if root is None:
             return False
-        sumList = []
-        sum = 0
-        self.__preOrderPaths(root, sum, sumList)
-        print("The root-to-leaf path sum:" + str(sumList))
+        sumList = self.getPathSum(root)
         for i in range(len(sumList)):
-            if sumList[i] == sumTarget:
+            if sumList[i] == targetSum:
                 return True
         return False
 
+    # get the root-to-leaf path sum list
+    def getPathSum(self, root:TreeNode) -> list:
+        if root is None:
+            return []
+        sumList = []
+        sumCur = 0
+        self.pathSumRecur(root, sumCur, sumList)
+        return sumList
 
-    def __preOrderPaths(self, root:TreeNode, sum:int, sumList:list):
-        sum += root.value
+    def pathSumRecur(self, root:TreeNode, sumCur:int, sumList:list):
+        if root is None:
+            sumList = []
+
+        sumCur += root.value
         if root.left is None and root.right is None:
-            sumList.append(sum)
+            sumList.append(sumCur)
+            # Backtrack:
+            sumCur -= root.value
             return
+
         if root.left:
-            self.__preOrderPaths(root.left, sum, sumList)
+            self.pathSumRecur(root.left, sumCur, sumList)
         if root.right:
-            self.__preOrderPaths(root.right, sum, sumList)
+            self.pathSumRecur(root.right, sumCur, sumList)
+        # Backtrack:
+        sumCur -= root.value
 
 
-
-btree1 = BinaryTree(1)
-btree1.root.left = TreeNode(2)
-btree1.root.right = TreeNode(3)
-btree1.root.left.left = TreeNode(4)
-btree1.root.left.right = TreeNode(5)
-btree1.root.right.right = TreeNode(7)
+btree1 = BinaryTree(5)
+btree1.root.left = TreeNode(4)
+btree1.root.right = TreeNode(8)
+btree1.root.left.left = TreeNode(11)
+btree1.root.right.left = TreeNode(13)
+btree1.root.right.right = TreeNode(4)
+btree1.root.left.left.left = TreeNode(7)
+btree1.root.left.left.right = TreeNode(2)
+btree1.root.right.right.left = TreeNode(5)
+btree1.root.right.right.right = TreeNode(1)
+btree1.root.right.right.right = TreeNode(1)
+btree1.root.right.right.right = TreeNode(1)
+btree1.root.right.right.right.right = TreeNode(9)
 
 
 """
-           1
-        /     \
-       2       3
-      /  \       \
-     4   5        7
-     
+               5
+          /           \
+        4              8
+       /              /   \
+     11              13    4     
+    /   \                 /  \  
+   7     2               5     1
+                                \
+                                 9
 """
 
-print("Pre order traversal of the tree: " + str(btree1.preOrderTrav(btree1.root)))
+print("Pre-order traversal of the binary tree: " + str(btree1.preOrderTrav(btree1.root)))
 
-sumTarget = 11
-print("The sum target = "+ str(sumTarget))
-print("if there is a root-to-leaf path sum equal to the target: "+ str(btree1.pathSum(btree1.root, sumTarget)))
+print("All paths of the binary tree: " + str(btree1.getPathSum(btree1.root)))
+
+target_sum = 22
+print("The target sum is: " + str(target_sum))
+print("If the target is included in the root-to-leaf path sum: " + str(btree1.checkPathSum(btree1.root, target_sum)))
