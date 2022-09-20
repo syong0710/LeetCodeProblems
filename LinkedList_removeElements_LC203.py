@@ -1,54 +1,71 @@
-# definition of a single-linked list
 class LinkedListNode:
     def __init__(self, nodeValue:int):
         self.value = nodeValue
         self.next = None
 
 class LinkedList:
-    def __init__(self, headValue:int):
+    def __init__(self, headValue):
         self.head = LinkedListNode(headValue)
 
-    def removeElements(self, head: LinkedListNode, target: int):
-        while head and head.value==target:
-            head = head.next
-        nodeCur = head
-        while nodeCur:
-            while nodeCur.next and nodeCur.next.value==target:
-                nodeCur.next = nodeCur.next.next
-            nodeCur = nodeCur.next
-        return head
+    def addNode(self, head: LinkedListNode, nodeValue:int):
+        if head is None:
+            head = LinkedListNode(nodeValue)
+        else:
+            nodeTmp = head
+            while nodeTmp.next:
+                nodeTmp = nodeTmp.next
+            nodeTmp.next = LinkedListNode(nodeValue)
+
 
 
     def linkedListTrav(self, head:LinkedListNode) -> list:
         if head is None:
             return []
-        nodeCur = head
         result = []
-        while nodeCur:
-            result.append(nodeCur.value)
-            nodeCur = nodeCur.next
+        nodeTmp = head
+        result.append(nodeTmp.value)
+        while nodeTmp.next:
+            nodeTmp = nodeTmp.next
+            result.append(nodeTmp.value)
         return result
 
+    # delete elements without creating a dummy head
+    def deleteElements1(self, head:LinkedListNode, target:int) -> LinkedListNode:
+        if head is None:
+            return head
 
-linkedlist1 = LinkedList(1)
-linkedlist1.head.next = LinkedListNode(3)
-linkedlist1.head.next.next = LinkedListNode(4)
-linkedlist1.head.next.next.next = LinkedListNode(6)
-linkedlist1.head.next.next.next.next = LinkedListNode(7)
-linkedlist1.head.next.next.next.next.next = LinkedListNode(9)
-linkedlist1.head.next.next.next.next.next.next = LinkedListNode(9)
-linkedlist1.head.next.next.next.next.next.next.next = LinkedListNode(11)
-linkedlist1.head.next.next.next.next.next.next.next.next = LinkedListNode(12)
+        # Create a dummy head
+        head_dummy = LinkedListNode(-1)
+        head_dummy.next = head
 
-print("The elements of the linked list: " + str(linkedlist1.linkedListTrav(linkedlist1.head)))
+        # iteration from head to tail
+        nodeCur = head_dummy
+        while nodeCur.next:
+            if nodeCur.next.value == target:
+                nodeCur.next = nodeCur.next.next
+            else:
+                nodeCur = nodeCur.next
 
-linkedlist1_rm1 = linkedlist1.removeElements(linkedlist1.head, 12)
-print("The elements of the linked list: " + str(linkedlist1.linkedListTrav(linkedlist1_rm1)))
-
+        return head_dummy.next
 
 
+linkedList1 = LinkedList(1)
+linkedList1.addNode(linkedList1.head,1)
+linkedList1.addNode(linkedList1.head,1)
+linkedList1.addNode(linkedList1.head,3)
+linkedList1.addNode(linkedList1.head,7)
+linkedList1.addNode(linkedList1.head,9)
+linkedList1.addNode(linkedList1.head,11)
+linkedList1.addNode(linkedList1.head,11)
+linkedList1.addNode(linkedList1.head,13)
+linkedList1.addNode(linkedList1.head,11)
+linkedList1.addNode(linkedList1.head,17)
+linkedList1.addNode(linkedList1.head,17)
 
+print("The linked list:" + str(linkedList1.linkedListTrav(linkedList1.head)))
 
+linkedList1_rmHead = linkedList1.deleteElements1(linkedList1.head, 11)
+print("The linked list with the target elements removed:" + str(linkedList1.linkedListTrav(linkedList1_rmHead)))
 
 
 
