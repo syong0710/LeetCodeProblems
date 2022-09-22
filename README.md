@@ -1,2 +1,0 @@
-# LeetCodeProblems
-LeetCode Problem number
