@@ -8,11 +8,10 @@ output: "blue is sky the"
 
 Step 1) Trim the spaces -> "the sky is blue"
 Step 2) Reverse the list-> ['e', 'u', 'l', 'b', ' ', 's', 'i', ' ', 'y', 'k', 's', ' ', 'e', 'h', 't']
-Step 3) Reverse the word by detected spaces -> ['b', 'l', 'u', 'e', ' ', 'i', 's', ' ', 's', 'k', 'y', ' ', 't', 'h', 'e']
+Step 3) Reverse the word by detected spaces ->
 """
 
-
-def reverseWords(inputStr: str):
+def reverseWords(inputStr: str) -> str:
     # Trim the spaces
     trimmed_str_list =  trimSpaces(inputStr)
     # Reverse the list
