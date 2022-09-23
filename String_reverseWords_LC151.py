@@ -7,13 +7,21 @@ input: " the   sky is blue "
 output: "blue is sky the"
 
 Step 1) Trim the spaces -> "the sky is blue"
-Step 2)
-Step 3)
+Step 2) Reverse the list-> ['e', 'u', 'l', 'b', ' ', 's', 'i', ' ', 'y', 'k', 's', ' ', 'e', 'h', 't']
+Step 3) Reverse the word by detected spaces ->
 """
 
 
-def reverseWords(inputStr: str) ->str:
-    return inputStr
+def reverseWords(inputStr: str):
+    # Trim the spaces
+    trimmed_str_list =  trimSpaces(inputStr)
+    # Reverse the list
+    rev_str_list = reverseList(trimmed_str_list)
+    # Reverse the word by detected spaces:
+    rev_each_word_list = reverseEachWord(rev_str_list)
+    # Transfer the list to a string:
+    return ''.join(rev_each_word_list)
+
 
 # swap cannot be performed in a string, so a list is created.
 def trimSpaces(inputStr: str) -> list:
@@ -53,27 +61,36 @@ def reverseEachWord(inputList:list)->None:
     end = 0
     length = len(inputList)
     list_temp = []
-    for i in range(0, length-1):
-        if inputList[i]== " " or i==length-1:
-            if end!=0:
-                start = end-1
+    for i in range(0, length):
+        if inputList[i]== " ":
+            if end!=0: # The first word is reversed
+                start = end + 1
             end = i
             new_list = reverseList(inputList[start:end])
+            list_temp += new_list + [" "]
+        if i == length-1: # The last word is reversed
+            start = end+1
+            end = i+1
+            new_list = reverseList(inputList[start:end])
             list_temp += new_list
-            print(str(start) + str(end))
-            print(str(new_list))
-            print(str(list_temp))
+    #print(list_temp)
+    return list_temp
 
 
 
 input_string = " the   sky is blue "
-print("The input string is " + input_string)
+print("The input string is:" + input_string)
 
+"""
 trimmed_str_list = trimSpaces(input_string)
 print("the words with spaces trimmed:" + str(trimmed_str_list))
 
 rev_str_list = reverseList(trimmed_str_list)
 print("the reversed words:" + str(rev_str_list))
 
-reverseEachWord(rev_str_list)
-print("the reversed words: " + str(rev_str_list))
+rev_each_word_list = reverseEachWord(rev_str_list)
+print("the reversed words: " + str(rev_each_word_list))
+"""
+
+reversedWord1 = reverseWords(input_string)
+print("the reversed words:" + reversedWord1)
